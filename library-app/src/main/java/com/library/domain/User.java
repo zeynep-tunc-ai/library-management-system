@@ -1,24 +1,19 @@
 package com.library.domain;
 
-public class User {
-    private Long id;
+import java.util.UUID;
+
+public class User extends BaseEntity{
     private String fullName;
     private String email;
     private String identityNumber;
 
     public User(){
     }
-    public User(Long id, String fullName, String email, String identityNumber){
-        this.id = id;
+    public User(UUID id, String fullName, String email, String identityNumber){
+        super(id);
         this.fullName = fullName;
         this.email = email;
         this.identityNumber = identityNumber;
-    }
-    public Long getId(){
-        return id;
-    }
-    public void setId(Long id){
-        this.id = id;
     }
     public String getFullName(){
         return fullName;

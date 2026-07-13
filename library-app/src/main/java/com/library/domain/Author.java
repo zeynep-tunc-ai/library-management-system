@@ -1,20 +1,15 @@
 package com.library.domain;
 
-public class Author {
-    private Long id;
+import java.util.UUID;
+
+public class Author extends BaseEntity{
     private String fullName;
 
     public Author(){
     }
-    public Author(Long id, String fullName){
-        this.id = id;
+    public Author(UUID id, String fullName){
+        super(id);
         this.fullName = fullName;
-    }
-    public Long getId(){
-        return id;
-    }
-    public void setId(Long id){
-        this.id = id;
     }
     public String getFullName(){
         return fullName;

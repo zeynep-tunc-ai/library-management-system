@@ -1,9 +1,9 @@
 package com.library.domain;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-public class Borrowing {
-    private Long id;
+public class Borrowing extends BaseEntity{
     private Book book;
     private User user;
     private LocalDate borrowedAt;
@@ -12,19 +12,13 @@ public class Borrowing {
 
     public Borrowing(){
     }
-    public Borrowing(Long id, Book book, User user, LocalDate borrowedAt, LocalDate returnedAt, Boolean isRetuned){
-        this.id = id;
+    public Borrowing(UUID id, Book book, User user, LocalDate borrowedAt, LocalDate returnedAt, Boolean isRetuned){
+        super(id);
         this.book = book;
         this.user = user;
         this.borrowedAt = borrowedAt;
         this.returnedAt = returnedAt;
         this.isReturned = isRetuned;
-    }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
     public Book getBook() {
         return book;
