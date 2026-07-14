@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BookRepository {
-    void save(Book book);
+    Book save(Book book);
     void delete(UUID id);
     Book findById(UUID id);
     List<Book> findAll();
