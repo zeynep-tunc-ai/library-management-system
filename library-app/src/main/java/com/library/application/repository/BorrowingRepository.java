@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BorrowingRepository {
-    void save(Borrowing borrowing);
+    Borrowing save(Borrowing borrowing);
     Borrowing findById(UUID id);
     List<Borrowing> finAll();
     long countByUserIdAndIsReturnedFalse(UUID userId);

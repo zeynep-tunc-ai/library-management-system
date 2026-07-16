@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AuthorRepository {
-    void save(Author author);
+    Author save(Author author);
     void delete(UUID id);
     Author findById(UUID id);
     List<Author> findAll();
