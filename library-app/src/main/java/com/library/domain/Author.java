@@ -1,7 +1,11 @@
 package com.library.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.util.UUID;
 
+@Entity
+@Table(name = "authors")
 public class Author extends BaseEntity{
     private String fullName;
 

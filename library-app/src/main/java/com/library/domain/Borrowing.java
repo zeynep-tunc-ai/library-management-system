@@ -2,9 +2,19 @@ package com.library.domain;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "borrowings")
 public class Borrowing extends BaseEntity{
+    @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private LocalDate borrowedAt;
     private LocalDate returnedAt;

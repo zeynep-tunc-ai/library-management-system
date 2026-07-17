@@ -2,10 +2,12 @@ package com.library.application.service;
 
 import com.library.application.repository.UserRepository;
 import com.library.domain.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
@@ -19,7 +21,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserById(UUID id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override

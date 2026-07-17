@@ -6,10 +6,12 @@ import com.library.application.repository.UserRepository;
 import com.library.domain.Book;
 import com.library.domain.Borrowing;
 import com.library.domain.User;
-import java.time.LocalDate;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
+@Service
 public class BorrowingServiceImpl implements BorrowingService{
     private final BorrowingRepository borrowingRepository;
     private final BookRepository bookRepository;
@@ -23,8 +25,8 @@ public class BorrowingServiceImpl implements BorrowingService{
 
     @Override
     public Borrowing borrowBook(UUID userId, UUID bookId) {
-        Book book = bookRepository.findById(bookId);
-        User user = userRepository.findById(userId);
+        Book book = bookRepository.findById(bookId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
         if (book == null) {
             System.out.println("Book not found!");
             return null;
@@ -56,7 +58,7 @@ public class BorrowingServiceImpl implements BorrowingService{
 
     @Override
     public Borrowing returnBook(UUID borrowingId) {
-        Borrowing borrowing = borrowingRepository.findById(borrowingId);
+        Borrowing borrowing = borrowingRepository.findById(borrowingId).orElse(null);
         if (borrowing == null)
         {
             System.out.println("Borrowing not found!");

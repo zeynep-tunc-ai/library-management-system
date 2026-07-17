@@ -2,10 +2,12 @@ package com.library.application.service;
 
 import com.library.application.repository.AuthorRepository;
 import com.library.domain.Author;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
@@ -20,7 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author getAuthorById(UUID id) {
-        return authorRepository.findById(id);
+        return authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Author not founded"));
     }
 
     @Override
@@ -38,6 +40,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthorById(UUID id) {
         Author authorToDelete = getAuthorById(id);
-        authorRepository.delete(authorToDelete.getId());
+        authorRepository.deleteById(authorToDelete.getId());
     }
 }

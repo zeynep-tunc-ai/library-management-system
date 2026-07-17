@@ -2,10 +2,12 @@ package com.library.application.service;
 
 import com.library.application.repository.BookRepository;
 import com.library.domain.Book;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class BookServiceImpl implements BookService{
     private final BookRepository bookRepository;
 
@@ -19,7 +21,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book getBookById(UUID id) {
-        return bookRepository.findById(id);
+        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not founded"));
     }
 
     @Override
@@ -37,7 +39,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public void deleteBookById(UUID id) {
         Book bookToDelete = getBookById(id);
-        bookRepository.delete(bookToDelete.getId());
+        bookRepository.deleteById(bookToDelete.getId());
 
         }
     }
