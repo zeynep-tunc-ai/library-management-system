@@ -6,12 +6,14 @@ import com.library.application.repository.UserRepository;
 import com.library.domain.Book;
 import com.library.domain.Borrowing;
 import com.library.domain.User;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class BorrowingServiceImpl implements BorrowingService{
     private final BorrowingRepository borrowingRepository;
     private final BookRepository bookRepository;
@@ -48,6 +50,7 @@ public class BorrowingServiceImpl implements BorrowingService{
         bookRepository.save(book);
 
         Borrowing borrowing = new Borrowing();
+        borrowing.setId(UUID.randomUUID());
         borrowing.setBook(book);
         borrowing.setUser(user);
         borrowing.setBorrowedAt(LocalDate.now());
@@ -62,6 +65,10 @@ public class BorrowingServiceImpl implements BorrowingService{
         if (borrowing == null)
         {
             System.out.println("Borrowing not found!");
+            return null;
+        }
+        if (borrowing.getIsReturned()) {
+            System.out.println("This book has already been returned!");
             return null;
         }
         borrowing.setReturnedAt(LocalDate.now());
