@@ -6,15 +6,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "borrowings")
 public class Borrowing extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "book_id")
+    @NotNull(message = "Book is required")
     private Book book;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull(message = "User is required")
     private User user;
     private LocalDate borrowedAt;
     private LocalDate returnedAt;

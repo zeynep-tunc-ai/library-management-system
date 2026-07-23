@@ -1,7 +1,12 @@
-package com.library.infrastructure.controller;
+package com.library.api.controller;
 
 import com.library.application.service.BookService;
 import com.library.domain.Book;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/com/library/api/books")
 public class BookController {
     private final BookService bookService;
 
@@ -17,7 +22,7 @@ public class BookController {
         this.bookService = bookService;
     }
     @PostMapping
-    public ResponseEntity<Book> addAuthor(@RequestBody Book book){
+    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
         Book savedBook = bookService.addBook(book);
         return ResponseEntity.ok(savedBook);
     }
@@ -31,8 +36,13 @@ public class BookController {
         Book book = bookService.getBookById(id);
         return ResponseEntity.ok(book);
     }
+    @GetMapping("/paged")
+    public ResponseEntity<Page<Book>> getAllBooksPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "title")Pageable pageable){
+        Page<Book> books = bookService.getAllBooksPaged(pageable);
+        return ResponseEntity.ok(books);
+    }
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @RequestBody Book book){
+    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @Valid @RequestBody Book book){
         Book updateBook = bookService.updateBook(id, book);
         return ResponseEntity.ok(updateBook);
     }

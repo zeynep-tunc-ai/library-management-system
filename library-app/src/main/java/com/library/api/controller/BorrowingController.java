@@ -1,15 +1,14 @@
-package com.library.infrastructure.controller;
+package com.library.api.controller;
 
 import com.library.application.service.BorrowingService;
 import com.library.domain.Borrowing;
-import com.library.domain.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/borrowings")
+@RequestMapping("/com/library/api/borrowings")
 public class BorrowingController {
     private final BorrowingService borrowingService;
 
@@ -17,7 +16,7 @@ public class BorrowingController {
         this.borrowingService = borrowingService;
     }
     @PostMapping("/borrow")
-    public ResponseEntity<Borrowing> borrowBorrowing(@RequestParam("userId") UUID userId,@RequestParam("bookId") UUID bookId){
+    public ResponseEntity<Borrowing> borrowBorrowing(@RequestParam("userId") UUID userId, @RequestParam("bookId") UUID bookId){
         Borrowing borrowing = borrowingService.borrowBook(userId, bookId);
         return ResponseEntity.ok(borrowing);
     }

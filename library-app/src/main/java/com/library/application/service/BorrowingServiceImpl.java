@@ -6,8 +6,9 @@ import com.library.application.repository.UserRepository;
 import com.library.domain.Book;
 import com.library.domain.Borrowing;
 import com.library.domain.User;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -30,21 +31,17 @@ public class BorrowingServiceImpl implements BorrowingService{
         Book book = bookRepository.findById(bookId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
         if (book == null) {
-            System.out.println("Book not found!");
-            return null;
+            throw new RuntimeException("Book not found!");
         }
         if (user == null) {
-            System.out.println("User not found!");
-            return null;
+            throw new RuntimeException("User not found!");
         }
         if (book.getStockCount() <= 0) {
-            System.out.println("Book has been borrowed.");
-            return null;
+            throw new RuntimeException("Book has been borrowed.");
         }
         long activeBorrowingCount = borrowingRepository.countByUserIdAndIsReturnedFalse(userId);
         if (activeBorrowingCount >= 3){
-            System.out.println("The user has reached the maximum book limit.");
-            return null;
+            throw new RuntimeException("The user has reached the maximum book limit.");
         }
         book.setStockCount(book.getStockCount() - 1);
         bookRepository.save(book);
@@ -64,12 +61,10 @@ public class BorrowingServiceImpl implements BorrowingService{
         Borrowing borrowing = borrowingRepository.findById(borrowingId).orElse(null);
         if (borrowing == null)
         {
-            System.out.println("Borrowing not found!");
-            return null;
+            throw new RuntimeException("Borrowing not found!");
         }
         if (borrowing.getIsReturned()) {
-            System.out.println("This book has already been returned!");
-            return null;
+            throw new RuntimeException("This book has already been returned!");
         }
         borrowing.setReturnedAt(LocalDate.now());
         borrowing.setIsReturned(true);

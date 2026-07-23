@@ -1,7 +1,8 @@
-package com.library.infrastructure.controller;
+package com.library.api.controller;
 
 import com.library.application.service.UserService;
 import com.library.domain.User;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/com/library/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -17,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user){
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user){
         User savedUser = userService.addUser(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -32,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User user){
+    public ResponseEntity<User> updateUser(@PathVariable UUID id,@Valid @RequestBody User user){
         User updateUser = userService.updateUser(id, user);
         return ResponseEntity.ok(updateUser);
     }

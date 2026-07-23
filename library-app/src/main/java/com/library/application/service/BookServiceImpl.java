@@ -2,6 +2,8 @@ package com.library.application.service;
 
 import com.library.application.repository.BookRepository;
 import com.library.domain.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +44,10 @@ public class BookServiceImpl implements BookService{
         bookRepository.deleteById(bookToDelete.getId());
 
         }
+
+    @Override
+    public Page<Book> getAllBooksPaged(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
     }
 

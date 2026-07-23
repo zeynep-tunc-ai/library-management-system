@@ -1,7 +1,8 @@
-package com.library.infrastructure.controller;
+package com.library.api.controller;
 
 import com.library.application.service.AuthorService;
 import com.library.domain.Author;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/authors")
+@RequestMapping("/com/library/api/authors")
 public class AuthorController {
     private final AuthorService authorService;
 
@@ -17,7 +18,7 @@ public class AuthorController {
         this.authorService = authorService;
     }
     @PostMapping
-    public ResponseEntity<Author> addAuthor(@RequestBody Author author){
+    public ResponseEntity<Author> addAuthor(@Valid @RequestBody Author author){
         Author savedAuthor = authorService.addAuthor(author);
         return ResponseEntity.ok(savedAuthor);
     }
@@ -33,7 +34,7 @@ public class AuthorController {
         return ResponseEntity.ok(author);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@PathVariable UUID id, @RequestBody Author author){
+    public ResponseEntity<Author> updateAuthor(@PathVariable UUID id,@Valid @RequestBody Author author){
         Author updateAuthor = authorService.updateAuthor(id, author);
         return ResponseEntity.ok(updateAuthor);
     }
