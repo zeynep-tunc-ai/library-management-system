@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice
+@RestControllerAdvice //Tüm Controller sınıflarını dinleyen küresel bir hata yakalayıcıdır
 public class GlobalExceptionHandler {
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(RuntimeException.class) //Yakalanacak spesifik hata türünü belirtir
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex){
         Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Bad Request");
-        response.put("message", ex.getMessage());
+        response.put("timestamp", LocalDateTime.now()); //Hatanın oluştuğu anın tarih ve saat bilgisini ekler
+        response.put("status", HttpStatus.BAD_REQUEST.value()); //HTTP durum kodunun sayısal değerini ekler
+        response.put("error", "Bad Request"); //Hatanın türünü ekler
+        response.put("message", ex.getMessage()); //Kod içerisinde fırlatılan özel hatanın mesajını alıp ekler
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

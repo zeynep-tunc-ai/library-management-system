@@ -22,8 +22,8 @@ public class User extends BaseEntity implements UserDetails {
     private String email;
     private String identityNumber;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.ROLE_USER;
+    @Enumerated(EnumType.STRING) // Enum değerini veritabanında doğrudan metin olarak tutar
+    private Role role = Role.ROLE_USER; // Varsayılan rol Role.ROLE_USER olarak atar
 
     public User(){
     }
@@ -53,17 +53,17 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() { //Kullanıcının yetkilerini spring security'ye haber verir
         return List.of();
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.email;
     }
 }

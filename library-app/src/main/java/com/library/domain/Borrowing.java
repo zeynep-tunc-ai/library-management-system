@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "borrowings")
 public class Borrowing extends BaseEntity{
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id") //FK sütun adını belirler
     @NotNull(message = "Book is required")
     private Book book;
     @ManyToOne
@@ -21,7 +21,7 @@ public class Borrowing extends BaseEntity{
     private User user;
     private LocalDate borrowedAt;
     private LocalDate returnedAt;
-    private Boolean isReturned;
+    private Boolean isReturned; // Kitabın iade edilip edilmediğini tutar
 
     public Borrowing(){
     }

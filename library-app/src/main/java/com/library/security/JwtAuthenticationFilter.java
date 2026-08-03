@@ -10,13 +10,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
+@Component //Sınıfın Spring tarafından yönetildiğini belirler
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
 
     public JwtAuthenticationFilter(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
+    //Gelen her isteği Controller'a ulaşmadan önce yakalar ve isteğin içindeki token'ı kontrol ettirir, geçerliyse kullanıcı e-postasını çıkartır ve isteğe yol verir
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
@@ -29,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+    //Gelen istek başlığındaki "Bearer " kısmını kesip atar geriye sadece işimize yarayan saf JWT token'ı döndürür.
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 

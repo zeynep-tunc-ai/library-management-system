@@ -2,6 +2,8 @@ package com.library.application.service;
 
 import com.library.application.repository.UserRepository;
 import com.library.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +42,10 @@ public class UserServiceImpl implements UserService{
     public void deleteUserById(UUID id) {
         User userToDelete = getUserById(id);
         userRepository.delete(userToDelete);
+    }
+
+    @Override
+    public Page<User> getAllUsersPaged(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

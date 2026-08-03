@@ -10,5 +10,6 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>{
     User findByEmail(String email);
+    //Veritabanında bu e-posta adresine sahip kullanıcı var mı yok mu kontrol eder
     boolean existsByEmail(String email);
 }

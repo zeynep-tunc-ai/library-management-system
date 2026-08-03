@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
+@Repository //Veritabanı işlemleri
 public interface AuthorRepository extends JpaRepository<Author, UUID>{
     Author findByFullName(String fullname);
 }

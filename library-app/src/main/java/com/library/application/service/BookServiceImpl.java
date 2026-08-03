@@ -46,8 +46,8 @@ public class BookServiceImpl implements BookService{
         }
 
     @Override
-    public Page<Book> getAllBooksPaged(Pageable pageable) {
+    public Page<Book> getAllBooksPaged(Pageable pageable) { //Kitapları istenilen sayfaya göre getirir
         return bookRepository.findAll(pageable);
     }
-    }
+}
 

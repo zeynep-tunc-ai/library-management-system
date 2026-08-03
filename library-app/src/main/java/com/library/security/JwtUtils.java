@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
+@Component //Sınıfın Spring tarafından yönetildiğini belirler
 public class JwtUtils {
     private String jwtSecret = "mySecretKeyForLibraryManagementSystemToken123456";
     private long jwtExpirationMs = 86400000;

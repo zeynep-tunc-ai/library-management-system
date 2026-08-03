@@ -12,5 +12,5 @@ public interface BookService {
     List<Book> getAllBooks();
     Book updateBook(UUID id, Book book);
     void deleteBookById(UUID id);
-    Page<Book> getAllBooksPaged(Pageable pageable);
+    Page<Book> getAllBooksPaged(Pageable pageable); //Sayfalama yani kitapları veritabanından parça parça çeker
 }

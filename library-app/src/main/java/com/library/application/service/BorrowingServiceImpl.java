@@ -6,6 +6,8 @@ import com.library.application.repository.UserRepository;
 import com.library.domain.Book;
 import com.library.domain.Borrowing;
 import com.library.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
-@Transactional
+@Transactional //Veritabanında fazla adımlı metodlar için kullanılır ve bir adımda hata olursa veritabanını ilk haline döndürür
 public class BorrowingServiceImpl implements BorrowingService{
     private final BorrowingRepository borrowingRepository;
     private final BookRepository bookRepository;
@@ -28,8 +30,8 @@ public class BorrowingServiceImpl implements BorrowingService{
 
     @Override
     public Borrowing borrowBook(UUID userId, UUID bookId) {
-        Book book = bookRepository.findById(bookId).orElse(null);
-        User user = userRepository.findById(userId).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);//Kitaı ID'yle çağırır
+        User user = userRepository.findById(userId).orElse(null);//Kullanıcıyı ID'yle bulur
         if (book == null) {
             throw new RuntimeException("Book not found!");
         }
@@ -39,6 +41,7 @@ public class BorrowingServiceImpl implements BorrowingService{
         if (book.getStockCount() <= 0) {
             throw new RuntimeException("Book has been borrowed.");
         }
+        //Kullanıcının teslim etmediği kitap sayısını kontrol eder
         long activeBorrowingCount = borrowingRepository.countByUserIdAndIsReturnedFalse(userId);
         if (activeBorrowingCount >= 3){
             throw new RuntimeException("The user has reached the maximum book limit.");
@@ -58,7 +61,7 @@ public class BorrowingServiceImpl implements BorrowingService{
 
     @Override
     public Borrowing returnBook(UUID borrowingId) {
-        Borrowing borrowing = borrowingRepository.findById(borrowingId).orElse(null);
+        Borrowing borrowing = borrowingRepository.findById(borrowingId).orElse(null); //Ödünç kaydı var mı konrtol eder
         if (borrowing == null)
         {
             throw new RuntimeException("Borrowing not found!");
@@ -73,5 +76,20 @@ public class BorrowingServiceImpl implements BorrowingService{
         bookRepository.save(book);
 
         return borrowingRepository.save(borrowing);
+    }
+
+    @Override
+    public Page<Borrowing> getAllBorrowings(Pageable pageable) {
+        return borrowingRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Borrowing> getAllActiveBorrowings(Pageable pageable) {
+        return borrowingRepository.findByReturnedFalse(pageable);
+    }
+
+    @Override
+    public Page<Borrowing> getAllReturnedBorrowings(Pageable pageable) {
+        return borrowingRepository.findByReturnedTrue(pageable);
     }
 }

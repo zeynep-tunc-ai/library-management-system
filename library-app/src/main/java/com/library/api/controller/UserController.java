@@ -3,6 +3,10 @@ package com.library.api.controller;
 import com.library.application.service.UserService;
 import com.library.domain.User;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/com/library/api/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
     private final UserService userService;
 
@@ -36,6 +41,11 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable UUID id,@Valid @RequestBody User user){
         User updateUser = userService.updateUser(id, user);
         return ResponseEntity.ok(updateUser);
+    }
+    @GetMapping("/paged")
+    public ResponseEntity<Page<User>> getAllUsersPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable){
+        Page<User> users = userService.getAllUsersPaged(pageable);
+        return ResponseEntity.ok(users);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserBYId(@PathVariable UUID id){

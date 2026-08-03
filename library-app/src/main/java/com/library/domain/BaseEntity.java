@@ -9,7 +9,7 @@ import java.util.UUID;
 @MappedSuperclass
 public class BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID) //ID'yi veri tabanında otomatik arttırır.
     private UUID id;
 
     public BaseEntity(){

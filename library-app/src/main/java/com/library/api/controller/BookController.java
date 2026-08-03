@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/com/library/api/books")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
     private final BookService bookService;
 
@@ -36,6 +37,7 @@ public class BookController {
         Book book = bookService.getBookById(id);
         return ResponseEntity.ok(book);
     }
+    //Sayfalanmış kitap listesini getirir
     @GetMapping("/paged")
     public ResponseEntity<Page<Book>> getAllBooksPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "title")Pageable pageable){
         Page<Book> books = bookService.getAllBooksPaged(pageable);
@@ -47,7 +49,7 @@ public class BookController {
         return ResponseEntity.ok(updateBook);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookBYId(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteBookById(@PathVariable UUID id){
         bookService.deleteBookById(id);
         return ResponseEntity.ok().build();
     }
