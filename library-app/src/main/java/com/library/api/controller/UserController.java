@@ -2,20 +2,22 @@ package com.library.api.controller;
 
 import com.library.application.service.UserService;
 import com.library.domain.User;
+import com.library.dto.CreateUserRequest;
+import com.library.dto.UpdateUserRequest;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/com/library/api/users")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "**")
 public class UserController {
     private final UserService userService;
 
@@ -23,14 +25,9 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<User> addUser(@Valid @RequestBody User user){
-        User savedUser = userService.addUser(user);
-        return ResponseEntity.ok(savedUser);
-    }
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<User> addUser(@Valid @RequestBody CreateUserRequest request){
+        User savedUser = userService.addUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id){
@@ -38,13 +35,13 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id,@Valid @RequestBody User user){
-        User updateUser = userService.updateUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable UUID id,@Valid @RequestBody UpdateUserRequest request){
+        User updateUser = userService.updateUser(id, request);
         return ResponseEntity.ok(updateUser);
     }
-    @GetMapping("/paged")
-    public ResponseEntity<Page<User>> getAllUsersPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable){
-        Page<User> users = userService.getAllUsersPaged(pageable);
+    @GetMapping
+    public ResponseEntity<Page<User>> getAllUsers(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable){
+        Page<User> users = userService.getAllUsers(pageable);
         return ResponseEntity.ok(users);
     }
     @DeleteMapping("/{id}")

@@ -6,7 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-
+//JWT üretmek, gelen isteklerdeki token'ların geçerliliğini doğrular
 @Component //Sınıfın Spring tarafından yönetildiğini belirler
 public class JwtUtils {
     private String jwtSecret = "mySecretKeyForLibraryManagementSystemToken123456";

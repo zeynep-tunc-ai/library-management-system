@@ -16,7 +16,9 @@ public interface BorrowingRepository extends JpaRepository<Borrowing, UUID>{
     //Verilen kitap ID'sine sahip ve henüz iade edilmemiş ödünç kaydı var mı diye kontrol eder
     boolean existsByBookIdAndIsReturnedFalse(UUID bookId);
     //Ödünç kitapları yani henüz iade edilememiş veritabanından parça parça çeker
-    Page<Borrowing> findByReturnedFalse(Pageable pageable);
+    Page<Borrowing> findByIsReturnedFalse(Pageable pageable);
     //Teslim edilen kitapları veritabanından parça parça çeker
-    Page<Borrowing> findByReturnedTrue(Pageable pageable);
+    Page<Borrowing> findByIsReturnedTrue(Pageable pageable);
+    //Kullanıcıya ve kitaba ait tüm ödünç kayıtlarını getirir
+    List<Borrowing> findByUserIdAndBookId(UUID userId, UUID bookId);
 }

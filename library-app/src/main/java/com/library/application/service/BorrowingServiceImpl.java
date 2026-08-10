@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,6 +46,13 @@ public class BorrowingServiceImpl implements BorrowingService{
         long activeBorrowingCount = borrowingRepository.countByUserIdAndIsReturnedFalse(userId);
         if (activeBorrowingCount >= 3){
             throw new RuntimeException("The user has reached the maximum book limit.");
+        }
+        //Kullanıcının bu kitabı önceden ödünç alıp almadığını kontrol eder
+        List<Borrowing> activeBorrowings = borrowingRepository.findByUserIdAndBookId(userId, bookId);
+        for (Borrowing borrowing : activeBorrowings) {
+            if (borrowing.getBook().getId().equals(bookId)) {
+                throw new RuntimeException("You have already borrowed this book!");
+            }
         }
         book.setStockCount(book.getStockCount() - 1);
         bookRepository.save(book);
@@ -85,11 +93,10 @@ public class BorrowingServiceImpl implements BorrowingService{
 
     @Override
     public Page<Borrowing> getAllActiveBorrowings(Pageable pageable) {
-        return borrowingRepository.findByReturnedFalse(pageable);
+        return borrowingRepository.findByIsReturnedFalse(pageable);
     }
 
-    @Override
-    public Page<Borrowing> getAllReturnedBorrowings(Pageable pageable) {
-        return borrowingRepository.findByReturnedTrue(pageable);
+    @Override    public Page<Borrowing> getAllReturnedBorrowings(Pageable pageable) {
+        return borrowingRepository.findByIsReturnedTrue(pageable);
     }
 }

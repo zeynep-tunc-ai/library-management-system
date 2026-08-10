@@ -2,20 +2,22 @@ package com.library.api.controller;
 
 import com.library.application.service.BookService;
 import com.library.domain.Book;
+import com.library.dto.CreateBookRequest;
+import com.library.dto.UpdateBookRequest;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/com/library/api/books")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "**")
 public class BookController {
     private final BookService bookService;
 
@@ -23,14 +25,9 @@ public class BookController {
         this.bookService = bookService;
     }
     @PostMapping
-    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
-        Book savedBook = bookService.addBook(book);
-        return ResponseEntity.ok(savedBook);
-    }
-    @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks(){
-        List<Book> books = bookService.getAllBooks();
-        return ResponseEntity.ok(books);
+    public ResponseEntity<Book> addBook(@Valid @RequestBody CreateBookRequest request){
+        Book savedBook = bookService.addBook(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable UUID id){
@@ -38,14 +35,14 @@ public class BookController {
         return ResponseEntity.ok(book);
     }
     //Sayfalanmış kitap listesini getirir
-    @GetMapping("/paged")
-    public ResponseEntity<Page<Book>> getAllBooksPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "title")Pageable pageable){
-        Page<Book> books = bookService.getAllBooksPaged(pageable);
+    @GetMapping
+    public ResponseEntity<Page<Book>> getAllBooks(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "title")Pageable pageable){
+        Page<Book> books = bookService.getAllBooks(pageable);
         return ResponseEntity.ok(books);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @Valid @RequestBody Book book){
-        Book updateBook = bookService.updateBook(id, book);
+    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @Valid @RequestBody UpdateBookRequest request){
+        Book updateBook = bookService.updateBook(id, request);
         return ResponseEntity.ok(updateBook);
     }
     @DeleteMapping("/{id}")

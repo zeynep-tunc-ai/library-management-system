@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/com/library/api/borrowings")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "**")
 public class BorrowingController {
     private final BorrowingService borrowingService;
 
@@ -21,29 +21,32 @@ public class BorrowingController {
         this.borrowingService = borrowingService;
     }
     //Yeni ödünç kaydı oluşturur
-    @PostMapping("/borrow")
+    @PostMapping
     public ResponseEntity<Borrowing> borrowBorrowing(@RequestParam("userId") UUID userId, @RequestParam("bookId") UUID bookId){
         Borrowing borrowing = borrowingService.borrowBook(userId, bookId);
         return ResponseEntity.ok(borrowing);
     }
     //Mevcut ödünç kaydını iade olarak günceller
-    @PutMapping("/return/{borrowingId}")
+    @PutMapping("/{borrowingId}/return")
     public ResponseEntity<Borrowing> returnBook(@PathVariable UUID borrowingId){
         Borrowing borrowing = borrowingService.returnBook(borrowingId);
         return ResponseEntity.ok(borrowing);
     }
-    @GetMapping("/paged")
-    public ResponseEntity<Page<Borrowing>> getAllBorrowingsPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "borrowDate") Pageable pageable){
+    //Tüm ödünçleri getirir
+    @GetMapping
+    public ResponseEntity<Page<Borrowing>> getAllBorrowings(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "borrowedAt") Pageable pageable){
         Page<Borrowing> borrowings = borrowingService.getAllBorrowings(pageable);
         return ResponseEntity.ok(borrowings);
     }
-    @GetMapping("/active/paged")
-    public ResponseEntity<Page<Borrowing>> getAllActiveBorrowingsPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "borrowDate") Pageable pageable){
+    //Aktif ödünçleri getirir
+    @GetMapping("/active")
+    public ResponseEntity<Page<Borrowing>> getAllActiveBorrowings(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "borrowedAt") Pageable pageable){
         Page<Borrowing> borrowings = borrowingService.getAllActiveBorrowings(pageable);
         return ResponseEntity.ok(borrowings);
     }
-    @GetMapping("/returned/paged")
-    public ResponseEntity<Page<Borrowing>> getAllReturnedBorrowingsPaged(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "returnDate") Pageable pageable){
+    @GetMapping("/returned")
+    //İade edilen ödünçleri getirir
+    public ResponseEntity<Page<Borrowing>> getAllReturnedBorrowings(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "returnedAt") Pageable pageable){
         Page<Borrowing> borrowings = borrowingService.getAllReturnedBorrowings(pageable);
         return ResponseEntity.ok(borrowings);
     }

@@ -1,7 +1,6 @@
 package com.library.api.controller;
 
-import com.library.api.LoginRequest;
-import com.library.security.JwtAuthenticationFilter;
+import com.library.dto.LoginRequest;
 import com.library.security.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +14,7 @@ import java.util.Map;
 //Kimlik doğrulama (Authentication) işlemlerini yöneten REST Controller sınıfı
 @RestController //Sınıfınn REST API olduğunu belirtir
 @RequestMapping("/com/library/api/auth") //Ana URL yolunu tanımlar
-@CrossOrigin(origins = "http://localhost:3000") //Adresten gelen API isteklerine (CORS) izin verir.
+@CrossOrigin(origins = "**") //Adresten gelen API isteklerine (CORS) izin verir.
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;

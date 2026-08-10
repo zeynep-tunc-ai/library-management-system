@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,7 +17,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-
+//Uygulamanın kimlik doğrulama ve yetkilendirme kurallarının merkezi
 @Configuration //Sınıfın konfigurasyon sınıfı olduğunu belirtir
 @EnableWebSecurity //Spring Security güvenlik yapılandırmalarını aktif eder
 public class SecurityConfig {
@@ -37,7 +36,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    //Uygulamanın tüm güvenlik filtresi zincirini ve HTTP istek yetkilendirme kurallarını yapılandıran  metod
+    //Uygulamanın tüm güvenlik filtresi zincirini ve HTTP istek yetkilendirme kurallarını yapılandıran metod
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -59,15 +58,15 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-    //http://localhost:3000'den gelen isteklerin engellenmemesi için CORS kurallarının tanımlandığı metod
+    //**'den gelen isteklerin engellenmemesi için CORS kurallarının tanımlandığı metod
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        //Sadece .requestMatchers(HttpMethod.DELETE, "/com/library/api/users/**").permitAll() gelen isteklere izin verir
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        // API'ye erişebilecek kaynak adresleri belirler
+        configuration.setAllowedOrigins(List.of("**"));
         //İzin verilen HTTP metodlarını belirler
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        //Tüm HTTP Header'larına izin verir
+        //Tüm HTTP Header'larına (başlık) izin verir
         configuration.setAllowedHeaders(List.of("*"));
         //Kimlik bilgilerinin gönderilmesine izin ver
         configuration.setAllowCredentials(true);

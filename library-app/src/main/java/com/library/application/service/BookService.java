@@ -1,16 +1,17 @@
 package com.library.application.service;
 
 import com.library.domain.Book;
+import com.library.dto.CreateBookRequest;
+import com.library.dto.UpdateBookRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.util.List;
+
 import java.util.UUID;
 
 public interface BookService {
-    Book addBook(Book book);
+    Book addBook(CreateBookRequest request);
     Book getBookById(UUID id);
-    List<Book> getAllBooks();
-    Book updateBook(UUID id, Book book);
+    Book updateBook(UUID id, UpdateBookRequest request);
     void deleteBookById(UUID id);
-    Page<Book> getAllBooksPaged(Pageable pageable); //Sayfalama yani kitapları veritabanından parça parça çeker
+    Page<Book> getAllBooks(Pageable pageable); //Sayfalama yani kitapları veritabanından parça parça çeker
 }

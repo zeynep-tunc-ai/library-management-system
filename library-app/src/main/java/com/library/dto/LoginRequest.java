@@ -1,4 +1,4 @@
-package com.library.api;
+package com.library.dto;
 
 public class LoginRequest {
     private String email;

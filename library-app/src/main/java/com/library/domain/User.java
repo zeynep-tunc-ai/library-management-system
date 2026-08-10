@@ -21,6 +21,7 @@ public class User extends BaseEntity implements UserDetails {
     @Email(message = "Invalid email format")
     private String email;
     private String identityNumber;
+    private String username;
     private String password;
     @Enumerated(EnumType.STRING) // Enum değerini veritabanında doğrudan metin olarak tutar
     private Role role = Role.ROLE_USER; // Varsayılan rol Role.ROLE_USER olarak atar
@@ -51,6 +52,12 @@ public class User extends BaseEntity implements UserDetails {
     public void setIdentityNumber(String identityNumber){
         this.identityNumber = identityNumber;
     }
+    public Role getRole() {
+        return this.role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { //Kullanıcının yetkilerini spring security'ye haber verir
@@ -61,9 +68,15 @@ public class User extends BaseEntity implements UserDetails {
     public String getPassword() {
         return this.password;
     }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
